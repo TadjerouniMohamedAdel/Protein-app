@@ -1,19 +1,39 @@
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
+import { motion } from 'framer-motion'
+const easing=[.6,-.05,.01,0.99]
+
+const fadeInUp = {
+  initial:{y:60,opacity:0},
+  animate:{y:0,opacity:1,transition:{duration:.6,ease:easing}},
+}
+
+const stagger = {
+  animate:{transition:{staggerChildren:.05}}
+}
 
 const Product = props => (
-  <div>
+  <motion.div
+    exit={{opacity:0}}
+    initial="initial"
+    animate="animate"
+  >
     <div className='fullscreen'>
       <div className='product'>
         <div className='img'>
-          <img key={props.product.image} src={props.product.image} />
+          <motion.img
+              animate={{x:0,opacity:1}}
+              initial={{x:200,opacity:0}}
+              key={props.product.image} 
+              src={props.product.image} 
+          />
         </div>
         <div className='product-details'>
           <div className='inner'>
             <Link href='/'>
-              <div>
+              <motion.div variants={fadeInUp}>
                 <a className='go-back'>Back to products</a>
-              </div>
+              </motion.div>
             </Link>
             <div>
               <span className='category'>Protein</span>
@@ -40,7 +60,7 @@ const Product = props => (
         </div>
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 Product.getInitialProps = async function(context) {
